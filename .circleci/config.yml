@@ -11,9 +11,10 @@ jobs:
   ios:
     macos:
       xcode: "9.0"
-    working_directory: /Users/distiller/project/ios
+    working_directory: /Users/distiller/project
     environment:
       FL_OUTPUT_DIR: /Users/distiller/project/output
+      FASTLANE_LANE: beta
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout:
@@ -25,10 +26,11 @@ jobs:
       # differ between the macOS image and the Docker containers above.
       - run: yarn
       - run: bundle install
+      - run:
+          name: Fastlane
+          command: bundle exec fastlane $FASTLANE_LANE
       - store_artifacts:
-          path: /Users/distiller/project/output
-      - store_test_results:
-          path: /Users/distiller/project/output/scan
+          path: /Users/distiller/project/output/Game.ipa
 
 workflows:
   version: 2
